@@ -37,46 +37,67 @@ function init (){
 
 }
 init();
+
+function cutDeck () {
+	deck.pop();
+	deckScores.pop();	
+}
+
+function playerTurn (){
+		
+		playerCards.push(deckScores[deckScores.length - 1]);
+		playerScores = playerCards.reduce(function(sum, current) {
+			return sum + current;
+			}, 0);
 	
+		document.querySelector('.player_card').insertAdjacentHTML('beforeend', '<img width="70px" src="img/' + deck[deck.length - 1] + '.png">');	
+		document.querySelector('.player_scores').textContent = 'Очки: ' + playerScores;
+	
+		cutDeck();
+		if (playerScores > 21) cutAce();
+		console.log (playerCards);
+		
+}
+
 function dealCards() {
 	
-	for (i = 0; i<2; i++) {		
-		document.querySelector('.player_card').insertAdjacentHTML('beforeend', '<img width="50px" src="img/' + deck[deck.length - 1] + '.png">');
-		playerScores += deckScores[deckScores.length -1];
-		document.querySelector('.player_scores').textContent = 'Очки: ' + playerScores;
-		playerCards.push(deck[deck.length - 1]);
-		deck.pop();
-		deckScores.pop();	
-	}
-	
-		document.querySelector('.dealer_card').insertAdjacentHTML('beforeend', '<img width="50px" src="img/' + deck[deck.length - 1] + '.png">');
+		document.querySelector('.dealer_card').insertAdjacentHTML('beforeend', '<img width="70px" src="img/' + deck[deck.length - 1] + '.png">');
 		dealerScores += deckScores[deckScores.length -1];
-		deck.pop();
-		deckScores.pop();
+		cutDeck();
 	
-		document.querySelector('.dealer_card').insertAdjacentHTML('beforeend', '<img id="dealerBack" width="50px" src="img/gray_back.png">');
+		document.querySelector('.dealer_card').insertAdjacentHTML('beforeend', '<img id="dealerBack" width="70px" src="img/gray_back.png">');
 		dealerBack = deck[deck.length - 1];
 		dealerScores += deckScores[deckScores.length -1];
 		document.querySelector('.dealer_scores').textContent = 'Очки: ' + dealerScores;
-
-		deck.pop();
-		deckScores.pop();
+		cutDeck();
 	
-	console.log (deck.length, dealerBack, playerCards);
+	for (i = 0; i<2; i++) {		
+		playerTurn();	
+	}
+	
 }
 
 dealCards();
 
 document.querySelector('.btn').addEventListener('click', function() {
-	console.log (deck[deck.length - 1]);
-	console.log (deckScores[deckScores.length - 1]);
 	
-})	
+		playerTurn();	
+	
+	if (playerScores > 21) {
+		
+		document.querySelector('.player_scores').textContent = 'Ты проиграл! Твои очки: ' + playerScores;
+		
+	}
 
-document.querySelector('.deck').addEventListener('click', function() {
+	else {
+		document.querySelector('.player_scores').textContent = 'Очки: ' + playerScores;	
+		
+		}
+	})	
+
+	document.querySelector('.deck').addEventListener('click', function() {
 	console.log ('Карты в колоде: ' + deck.length);
 	document.getElementById('dealerBack').src = 'img/' + dealerBack + '.png';
-	//replace('<img id="dealerBack" width="50px" src="img/gray_back.png">','<img id="dealerBack" width="50px" src="img/' + dealerBack + '.png">');
 });
 
 document.querySelector('.new__game').addEventListener('click', function() {
@@ -88,7 +109,29 @@ document.querySelector('.new__game').addEventListener('click', function() {
 	init();
 	dealCards();
 	
-})
+});
+
+document.querySelector('.test').addEventListener('click', function name() {
+	console.log(playerCards);
+	
+});
+
+function cutAce() {	
+	console.log(playerCards);
+	
+	for (i = 0; i < playerCards.length; i++) {
+		
+		if (playerCards[i] == 11) playerCards[i] = 1;
+	}
+	
+	playerScores = playerCards.reduce(function(sum, current) {
+			return sum + current;
+			}, 0);
+	
+	console.log (playerCards, playerScores);
+	
+}
+
 
 
 
