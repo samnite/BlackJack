@@ -1,107 +1,214 @@
-/*
-
-.player_card {
-    width: 140px;
-}*/
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    
-}
-
-.clearfix::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
 body {
-    /*background-image: linear-gradient(rgba(62, 20, 20, 0.4), rgba(62, 20, 20, 0.4)), url(back.jpg);*/
-    background-size: cover;
-    background-position: center;
-    font-family: Lato;
-    font-weight: 300;
-    position: relative;
-    height: 100vh;
-    color: #111;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    background-color: #EFEFEF;
 }
 
-.wrapper {
-    width: 1000px;
+/* HEADER STYLES */
+#poker {
+    height: 150px;
+}
+h1 {
+    letter-spacing: 0.3em;
+}
+#messages h2 {
+    margin: 0;
+    padding-top: 30px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+
+/* TABLE STYLES */
+#table {
+    margin: auto;
     height: 500px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: seagreen;
-    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    width: 700px;
+    background-color: #53AE8D;
+    border-radius: 75px;
+}
+#dealer-hand, #player-hand {
+    width: 600px;
+    height: 130px;
+    background-color: white;
+    margin: auto;
+}
+#dealer-label, #player-label {
+    display: block;
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    width: 600px;
+    margin: 10px auto 10px;
 }
 
-.stop button {
-    top: 420px;
-    width: 100px;
-    height: 35px;
-    position: absolute;
-    left: 110px;
+
+/* BUTTON STYLES */
+.buttons button {
+    color: #484e56;
+    width: 147px;
+    background-color: #EFEFEF;
+    border: none;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    margin-top: 22px;
+    vertical-align: top;
+    height: 50px;
+}
+.buttons button:hover {
+    opacity: 0.7;
+    transition: 1s;
+    cursor: pointer;
+}
+.buttons button:focus {
+    outline: none;
+    border: none;
 }
 
-.btn button {
-    top: 420px;
-    width: 100px;
-    height: 35px;
-    position: absolute;
-    left: 5px
-}
-.new__game button {
-    top: 420px;
-    width: 100px;
-    height: 35px;
-    position: absolute;
-    left: 215px
+.disabled {
+    pointer-events: none;
+    opacity: 0.7;
 }
 
-.player_scores, .dealer_scores {
-    color: yellow;
-    font-size: 20px;
+/* CARD STYLES */
+.hand img {
+    text-align: left;
+    padding-top: 5px;
+    height: 90%;
+    margin-left: -20px;
+}
+.hand :first-child {
+    margin: 0;
 }
 
-.winner {
-    color: orange;
-    font-size: 25px;
-    top: 40px;
-    left: 700px;
-    position: absolute;
-}
 
-.player_panel {
-    
-    color: orange;
-    font-size: 25px;
-    position: absolute;
-    top: 70px;
-    left: 700px;
-    
-    
+/* BET STYLES */
+.betting {
+    margin: 20px auto;
+    height: 100px;
+    width: 700px;
+    background-color: #d9dbdd;
+    border-radius: 15px;
 }
-.money_value {
+.betting div {
+    display: inline-block;
+}
+.betting img {
+    height: 80px;
+    margin-top: 8px;
+    margin-right: 18px;
+}
+.betting img:hover {
+    cursor: pointer;
+}
+.bet-square {
     float: left;
+    margin-left: 30px;
+}
+.pot-square {
+    float: right;
+    margin-right: 47px;
+}
+.bet-square, .pot-square {
+    font-weight: 800;
+    font-size: 23px;
+    margin-top: -8px;
+    width: 100px;
+    letter-spacing: 0.1em;
+    color: #484e56;
+    text-transform: uppercase;
+}
+#pot, #bet {
+    margin-top: -24px;
+    margin-left: -5px;
+}
+.card-img {
+    display: inline-block;    
 }
 
-.inbox {
-    position: absolute;
-	text-transform: uppercase;
-	font-size: 20px;
-    left: 1px;
-    top: 100px;
-    transform: translateX(-50%);
-	font-family: 'Lato';
-    width: 180px;
-    box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
-	text-align: center;
-	padding: 5px;
+.card-img img {
+    max-height:130px;
 }
+
+
+
+/* MEDIA QUERIES */
+@media (max-width: 650px) {
+    #poker {
+        height: 120px;
+    }
+    h1 {
+        font-size: 23px
+    }
+    h2 {
+        font-size: 20px;
+    }
+    #table {
+        border-radius: 5px;
+        height: 376px;
+    }
+    #table, .buttons, .betting {
+        width: 100%;
+    }
+    #dealer-hand, #player-hand {
+        height: 75px;
+    }
+    .card-img img {
+        max-height: 75px;
+}
+    .hand img {
+        margin-left: -15px;
+    }
+    #dealer-hand, #player-hand, #player-label, #dealer-label {
+        width: 95%;
+    }
+    #player-label, #dealer-label {
+        margin-left: 10px;
+    }
+    .buttons button {
+        margin-top: 18px;
+        font-size: 13px;
+        width: 22.5%;
+        padding: 12px 0px;
+    }
+    #doubledown {
+        padding-top: 11px;
+    }
+    .betting {
+        margin-top: 6px;
+        height: 154px;
+        border-radius: 5px;
+    }
+    .bet-square, .pot-square {
+        margin: 0;
+        float: none;
+        width: 200px;
+    }
+    .bet-square {
+        margin-top: 5px;
+    }
+    .bet-square p, .pot-square p {
+        margin: 0;
+        font-size: 20px;
+        display: inline-block;
+    }
+    #bet, #pot {
+        margin-left: 2px;
+    }
+    .betting img {
+        height: 67px;
+        margin-top: 10px;
+        margin-right: 3px;
+    }
+
+
+}
+
+
+
 
 
 
