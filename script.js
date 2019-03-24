@@ -2,7 +2,7 @@ var player, dealer, deck, money, bet;
 money = 500;
 
 function init(){
-
+  
 	deck = {
         cards: [],
 	    deckScores: [],
@@ -52,6 +52,7 @@ function init(){
     document.querySelector('.doubledown').classList.add('disabled');
     document.querySelector('.hit-button').classList.add('disabled');
     document.querySelector('.stand-button').classList.add('disabled');
+    document.querySelector('.chips').style.display = 'block';
     
     
 	deck.shuffleDeck(deck.cards, deck.deckScores);	
@@ -72,10 +73,10 @@ function nextTurn(type){
 			return sum + current;
 			}, 0);
 	   if (type == player) {
-        document.querySelector('.player-hand').insertAdjacentHTML('beforeend', '<div class="card-img"><img ' + ' id="player' + type.id[type.id.length -1] + '" ' + 'src="img/' + deck.cards[deck.cards.length - 1] + '.png"></div>');	
+        document.getElementById('player-hand').insertAdjacentHTML('beforeend', '<img ' + ' id="player' + type.id[type.id.length -1] + '" ' + 'src="img/' + deck.cards[deck.cards.length - 1] + '.png">');	
 		document.getElementById('player-label').textContent = 'Игрок: ' + player.scores;           
         } else if (type == dealer) {
-        document.querySelector('.dealer-hand').insertAdjacentHTML('beforeend', '<div class="card-img"><img ' + ' id="dealer' + type.id[type.id.length -1] + '" ' + 'src="img/' + deck.cards[deck.cards.length - 1] + '.png"></div>');		
+        document.getElementById('dealer-hand').insertAdjacentHTML('beforeend', '<img ' + ' id="dealer' + type.id[type.id.length -1] + '" ' + 'src="img/' + deck.cards[deck.cards.length - 1] + '.png">');		
         };	
         cutDeck();    
 		if (type.scores > 21) cutAce(type);		
@@ -85,8 +86,8 @@ function dealCards() {
 	for (i = 0; i<2; i++) {		
 		nextTurn(player);
         nextTurn(dealer);
-	};    
-    document.getElementById('dealer2').src ='img/gray_back.png';  
+    };
+    document.getElementById('dealer2').src ='img/green_back.png';  
     document.querySelector('.deal-button').classList.add('disabled');
     document.querySelector('.doubledown').classList.remove('disabled');
     document.querySelector('.hit-button').classList.remove('disabled');
@@ -96,12 +97,27 @@ function dealCards() {
 
 
 document.querySelector('.deal-button').addEventListener('click', function() {
+  
+    
     document.getElementById('dealer-label').textContent = 'Дилер: ';
     document.getElementById('player-label').textContent = 'Игрок: ';
-    document.querySelector('.player-hand').textContent = '';
-    document.querySelector('.dealer-hand').textContent = '';
+    document.getElementById('player-hand').textContent = '';
+    document.getElementById('dealer-hand').textContent = '';
     document.getElementById('messages').innerHTML = '<h2>Испытай удачу!</h2>';
-    if (bet > 0) dealCards();  
+    
+    if (bet > 0) {
+        dealCards();     
+        document.querySelector('.chips').style.display = 'none';
+    }
+    else document.getElementById('messages').innerHTML = '<h2>Сделай ставку!</h2>';
+    
+    if (player.cards[0] == 10 && player.cards[1] == 11 || player.cards[0] == 11 && player.cards[1] == 10) {
+        document.getElementById('messages').innerHTML = '<h2>Блек джек!!!</h2>';
+        bet += bet * 0.5;
+        money += bet;
+        drawMoney();
+        init();
+    } 
 });
 
 document.querySelector('.hit-button').addEventListener('click', function() {
@@ -110,6 +126,34 @@ document.querySelector('.hit-button').addEventListener('click', function() {
         endTurn();
 	} else document.getElementById('player-label').textContent = 'Игрок: ' + player.scores;
 });	
+
+
+
+document.querySelector('.stand-button').addEventListener('click', function name() {
+    hideButtons();
+    checkDealer();
+});
+
+document.querySelector('.doubledown').addEventListener('click', function name() {
+    console.log(money, bet);
+    if ((bet * 2) > money) {
+        document.getElementById('messages').innerHTML = '<h2>Недостаточно средств!</h2>';
+    } else {
+        document.querySelector('.doubledown').classList.add('disabled');
+        hideButtons();
+        bet = bet * 2;
+        document.getElementById('bet').textContent = '$' + bet;
+        nextTurn(player);
+        checkDealer();
+    }
+
+ });
+
+function hideButtons(){
+    document.querySelector('.stand-button').classList.add('disabled');  
+    document.querySelector('.hit-button').classList.add('disabled');
+    document.querySelector('.doubledown').classList.add('disabled');
+};
 
 function checkDealer() {
     if (dealer.scores < 18) {
@@ -120,25 +164,6 @@ function checkDealer() {
         endTurn();
     } else endTurn();
 }
-
-document.querySelector('.stand-button').addEventListener('click', function name() {
-    document.querySelector('.stand-button').classList.add('disabled');  
-    document.querySelector('.hit-button').classList.add('disabled');
-    document.querySelector('.doubledown').classList.add('disabled');
-    checkDealer();
-});
-
-document.querySelector('.doubledown').addEventListener('click', function name() {
-    document.querySelector('.doubledown').classList.add('disabled');
-    document.querySelector('.stand-button').classList.add('disabled');  
-    document.querySelector('.hit-button').classList.add('disabled');
-    document.querySelector('.doubledown').classList.add('disabled');
-    bet = bet * 2;
-    document.getElementById('bet').textContent = '$' + bet;
-    nextTurn(player);
-    checkDealer();
- });
-
 
 function chooseBet() {
     document.getElementById('five').addEventListener('click', function(){
@@ -158,8 +183,12 @@ function chooseBet() {
 chooseBet();
 
 function changeBet(cost) {
-    bet += cost;
-    document.getElementById('bet').textContent = '$' + bet;    
+    if ((bet + cost) > money) {
+        document.getElementById('messages').innerHTML = '<h2>Недостаточно средств!</h2>';
+    } else {
+        bet += cost;
+        document.getElementById('bet').textContent = '$' + bet;    
+    }    
 };
     
 function endTurn() {
@@ -175,7 +204,7 @@ function endTurn() {
     } else {
         document.getElementById('messages').innerHTML = '<h2>Ничья!</h2>';
         bet += bet;
-        document.getElementById('pot').textContent = '$ ' + money;
+        drawMoney();
     }
     init();
 }
@@ -188,14 +217,14 @@ function playerWin() {
     drawScores();
     document.getElementById('messages').innerHTML = '<h2 style="color:green">Ты выиграл!</h2>';
     money += bet;
-    document.getElementById('pot').textContent = '$ ' + money;
+    drawMoney();
 }
 
 function playerLose() {
     drawScores();
     document.getElementById('messages').innerHTML = '<h2 style="color:#FE2E2E">Ты проиграл!</h2>';
     money -= bet;  
-    document.getElementById('pot').textContent = '$ ' + money;
+    drawMoney();
 }
 
 function drawDealerBack () {
@@ -211,6 +240,9 @@ function cutAce(type) {
 			}, 0);
 }
 
+function drawMoney() {
+    document.getElementById('pot').textContent = '$ ' + money;
+}
 
 
 

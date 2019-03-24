@@ -76,9 +76,9 @@ h1 {
 /* CARD STYLES */
 .hand img {
     text-align: left;
-    padding-top: 5px;
-    height: 90%;
-    margin-left: -20px;
+    padding-top: 1px;
+    height: 99%;
+    margin-left: -25px;
 }
 .hand :first-child {
     margin: 0;
