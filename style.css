@@ -58,11 +58,13 @@ h1 {
     vertical-align: top;
     height: 50px;
 }
-.buttons button:hover {
+/* .buttons button:hover {
     opacity: 0.7;
     transition: 1s;
-    cursor: pointer;
-}
+    cursor: pointer; 
+}    
+*/
+
 .buttons button:focus {
     outline: none;
     border: none;
