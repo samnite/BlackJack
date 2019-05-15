@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
 import Card from './components/Card/Card';
-import Header from './components/Header/Header';
+import Table from './components/Table/Table';
+import classes from './App.module.css';
+import Chips from './components/Chips/Chips';
+
 
 
 
@@ -18,15 +20,14 @@ class App extends Component {
     player: {},
     dealer: {},
     isActiveButtons: {
-      dealButton: true,
+      dealButton: false,
       doubleButton: false,
-      hitButton: true,
+      hitButton: false,
       standButton: false
     }
   }
 
-  generateDeck() {      
- 
+  generateDeck() {
     const generateDeck = {        
       tempSuits: [0, 0, 0, 0],
       suits: ['Hearts', 'Spades', 'Clubs', 'Diamonds'],
@@ -60,9 +61,9 @@ class App extends Component {
     this.init()
     this.generateDeck()
     return (
-      <div >
-        <Header active={this.state.isActiveButtons}/>
-        
+      <div className={classes.body}>
+        <Table active={this.state.isActiveButtons}/>
+        <Chips money={this.state.money}/>
       </div>
     );
   }

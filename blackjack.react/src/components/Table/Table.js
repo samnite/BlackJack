@@ -1,8 +1,8 @@
 import React from 'react';
 import Aux from '../../hoc/Auks';
-import classes from './Header.module.css';
+import classes from '../../App.module.css';
 
-const header = (props) => {
+const table = (props) => {
     console.log(props)
     return (
         <Aux>
@@ -32,8 +32,7 @@ const header = (props) => {
                 </div>
             </div>
         </Aux>
-
     )
 }
 
-export default header;
+export default table;
