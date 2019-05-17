@@ -12,25 +12,25 @@ const chips = (props) => {
             <div className={classes.betting}>
                 <div className={classes.bet_square}>
                     <p>Bet</p>
-                    <p>$0</p>
+                    <p>${props.bet}</p>
                 </div>
                 <div className={classes.pot_square}>
                     <p>Money</p>
                     <p>${props.money}</p>
                 </div>
 
-                <div className={classes.chips}>
+                <div >
                     <div >
-                        <img src={chip5} />
+                        <img src={chip5} alt="" />
                     </div>
                     <div >
-                        <img src={chip10} />
+                        <img src={chip10} alt="" />
                     </div>
                     <div >
-                        <img src={chip15} />
+                        <img src={chip15} alt="" />
                     </div>
                     <div >
-                        <img src={chip50} />
+                        <img src={chip50} alt="" />
                     </div>
                 </div>
             </div>

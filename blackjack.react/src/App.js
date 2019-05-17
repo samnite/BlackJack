@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Card from './components/Card/Card';
 import Table from './components/Table/Table';
 import classes from './App.module.css';
 import Chips from './components/Chips/Chips';
@@ -9,7 +8,22 @@ import Chips from './components/Chips/Chips';
 
 class App extends Component {
   init() {
-    console.log('test')
+    const generateDeck = () => {
+      const generateDeck = {        
+        tempSuits: [0, 0, 0, 0],
+        suits: ['Hearts', 'Spades', 'Clubs', 'Diamonds'],
+        values: ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King'],
+        weight: [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+    };  
+      for (let i = 0; i < generateDeck.suits.length; i++) {
+        for (let j = 0; j < generateDeck.values.length; j++) {
+          this.state.cards.push(generateDeck.suits[i]+generateDeck.values[j]);
+          this.state.deckScores.push(generateDeck.tempSuits[i] + generateDeck.weight[j]);
+        }
+      };
+      this.shuffleDeck(this.state.cards, this.state.deckScores)
+    };
+    generateDeck();
   }
 
   state = {
@@ -17,33 +31,25 @@ class App extends Component {
     deckScores: [],
     money: 500,
     bet: 0,
-    player: {},
-    dealer: {},
+    player: {
+      cards: [],
+      cardsScores: [],
+      scores: 0
+    },
+    dealer: {
+      cards: [],
+      cardsScores: [],
+      scores: 0
+    },
     isActiveButtons: {
-      dealButton: false,
+      dealButton: true,
       doubleButton: false,
       hitButton: false,
       standButton: false
-    }
+    },
+    isActiveChips: false
   }
 
-  generateDeck() {
-    const generateDeck = {        
-      tempSuits: [0, 0, 0, 0],
-      suits: ['Hearts', 'Spades', 'Clubs', 'Diamonds'],
-      values: ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King'],
-      weight: [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-  };
-
-    for (let i = 0; i < generateDeck.suits.length; i++) {
-      for (let j = 0; j < generateDeck.values.length; j++) {
-        this.state.cards.push(generateDeck.suits[i]+generateDeck.values[j]);
-        this.state.deckScores.push(generateDeck.tempSuits[i] + generateDeck.weight[j]);
-      }
-    };
-    this.shuffleDeck(this.state.cards, this.state.deckScores)
-    console.log()
-  }
 
   shuffleDeck = (arr1, arr2) => {
     for (let i = arr1.length - 1; i > 0; i--) {
@@ -57,13 +63,43 @@ class App extends Component {
     }
   }
 
+  nextTurn = (type) => {  
+    const oldState = type;     
+    type.cards.push(this.state.cards[this.state.cards.length - 1]);
+    type.cardsScores.push(this.state.deckScores[this.state.deckScores.length - 1]);
+    this.state.cards.pop();
+    this.state.deckScores.pop();
+    type.scores = type.cardsScores.reduce((sum, current) => {
+      return sum + current
+    },0)
+    console.log(oldState)
+  }
+
+  startRound = () => {
+    this.nextTurn(this.state.player);
+    this.nextTurn(this.state.player);
+    this.nextTurn(this.state.dealer);
+    this.nextTurn(this.state.dealer);
+    const oldState = this.state.isActiveButtons;
+    oldState.dealButton = false;
+    this.setState({isActiveButtons: oldState}); 
+    console.log(this.state)   
+  }
+
   render () {
-    this.init()
-    this.generateDeck()
+    this.init()   
     return (
       <div className={classes.body}>
-        <Table active={this.state.isActiveButtons}/>
-        <Chips money={this.state.money}/>
+        <Table 
+          active={this.state.isActiveButtons}
+          player={this.state.player}
+          click={this.startRound}
+          dealer={this.state.dealer} />
+        <Chips 
+          
+          money={this.state.money}
+          bet={this.state.bet}
+          isActive={this.state.isActiveChips} />
       </div>
     );
   }
