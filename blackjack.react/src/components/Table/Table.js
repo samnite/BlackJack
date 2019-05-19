@@ -2,6 +2,7 @@ import React from 'react';
 import Aux from '../../hoc/Auks';
 import classes from '../../App.module.css';
 import Card from '../Card/Card';
+import Buttons from '../Buttons/Buttons';
 
 const table = (props) => {
 
@@ -13,29 +14,32 @@ const table = (props) => {
             </div>
             <div className={classes.table}>
                 <div className={classes.messages}>
-                    <h2>Good Luck!</h2>
+                    <h2>{props.message}</h2>
                 </div>
 
                 <label className={classes.dealer_label} > Dealer: </label>
                 <div className={dealerHand.join(' ')}>
-                    {props.dealer.cards.map((el, i) => {
-                        return <Card card={el} key={i}/>
-                    })}
+                    {props.show ? (
+                                <Aux>
+                                    <Card card={props.dealer.cards[0]} />
+                                    <Card card="Back" />
+                                </Aux>
+                            ) : props.dealer.cards.map((el, i) => {
+                            return <Card card={el} key={i}/>
+                        })
+                    }
                 </div>
 
-                <label className={classes.player_label}>Player: {props.player.scores}</label>
+                <label className={classes.player_label}>Player: {props.player.scores === 0 ? null : props.player.scores}</label>
                 <div className={dealerHand.join(' ')}>
                     {props.player.cards.map((el, i) => {
                         return <Card card={el} key={i}/>
                     })}
                 </div>
-
-                <div className={classes.Buttons}>
-                    <button onClick={props.click} className={props.active.dealButton ? null : classes.disabled}>Deal</button>
-                    <button className={props.active.doubleButton ? null : classes.disabled}>Double</button>
-                    <button className={props.active.hitButton ? null : classes.disabled}>Hit</button>
-                    <button className={props.active.standButton ? null : classes.disabled}>Stand</button>
-                </div>
+                <Buttons 
+                    clickDeal={props.clickDeal}
+                    clickHit={props.clickHit}
+                    active={props.active} />                
             </div>
         </Aux>
     )

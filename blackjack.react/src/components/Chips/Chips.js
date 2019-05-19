@@ -19,19 +19,11 @@ const chips = (props) => {
                     <p>${props.money}</p>
                 </div>
 
-                <div >
-                    <div >
-                        <img src={chip5} alt="" />
-                    </div>
-                    <div >
-                        <img src={chip10} alt="" />
-                    </div>
-                    <div >
-                        <img src={chip15} alt="" />
-                    </div>
-                    <div >
-                        <img src={chip50} alt="" />
-                    </div>
+                <div className={props.isActive ? null : classes.chipsDisable}>
+                    <img src={chip5} alt="" onClick={props.change5} />
+                    <img src={chip10} alt="" onClick={props.change10}/>
+                    <img src={chip15} alt="" onClick={props.change15}/>
+                    <img src={chip50} alt="" onClick={props.change50}/>
                 </div>
             </div>
         </Aux>

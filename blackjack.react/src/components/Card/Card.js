@@ -52,6 +52,7 @@ import Diamonds10 from '../../assets/cards/Diamonds10.png';
 import DiamondsJack from '../../assets/cards/DiamondsJack.png';
 import DiamondsQueen from '../../assets/cards/DiamondsQueen.png';
 import DiamondsKing from '../../assets/cards/DiamondsKing.png';
+import Back from '../../assets/cards/blue_back.png';
 
 const card = (props) => {
     let card = null;
@@ -107,6 +108,7 @@ const card = (props) => {
     if (props.card === 'DiamondsJack') card = DiamondsJack;
     if (props.card === 'DiamondsQueen') card = DiamondsQueen;
     if (props.card === 'DiamondsKing') card = DiamondsKing;
+    if (props.card === 'Back') card = Back;
 
     return (
         <img src={card} alt="" />

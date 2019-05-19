@@ -95,9 +95,10 @@ h1 {
 
 
 /* BET STYLES */
-.chipsDisable {
-    display: block;
+.chipsDisable img {
+    display: none;
 }
+
 .betting {
     margin: 20px auto;
     height: 100px;
@@ -145,6 +146,10 @@ h1 {
 
 .card_img img {
     max-height:130px;
+}
+
+.disableChips div {
+    display: none;
 }
 
 
