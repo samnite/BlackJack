@@ -36,7 +36,9 @@ const table = (props) => {
                         return <Card card={el} key={i}/>
                     })}
                 </div>
-                <Buttons 
+                <Buttons
+                    clickDouble={props.clickDouble} 
+                    clickStand={props.clickStand}
                     clickDeal={props.clickDeal}
                     clickHit={props.clickHit}
                     active={props.active} />                

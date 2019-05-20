@@ -153,6 +153,7 @@ class App extends Component {
   hitButtonHandler = async () => {
     const player = 'player';
     await this.nextTurn(player);
+    this.setState({message: 'Good Luck!'});
     if (this.state.player.scores > 21)  this.playerLoseHandler();
   }
 
@@ -181,6 +182,29 @@ class App extends Component {
     this.init();
   }
 
+  doubleButtonHandler = () => {
+    if(this.state.bet * 2 < this.state.money) {
+      this.hitButtonHandler();
+      this.setState((prevState, props) => {
+        return {
+          bet: prevState.bet * 2
+        }
+      })
+    } else {
+      this.setState({message: 'Insufficient funds!'})
+    }
+  }
+
+  dealerTurnHandler = async () => {
+    const dealer = 'dealer';
+    if(this.state.dealer.scores < 18) {
+      for (let i=0; this.state.dealer.scores < 18; i++) {
+        await this.nextTurn(dealer);
+      }
+    }
+    this.setState({showBack: false})
+  }
+
   render () {      
     return (
       <div className={classes.body}>
@@ -189,6 +213,8 @@ class App extends Component {
           player={this.state.player}
           clickDeal={this.startRound}
           clickHit={this.hitButtonHandler}
+          clickDouble={this.doubleButtonHandler}
+          clickStand={this.dealerTurnHandler}
           dealer={this.state.dealer}
           message={this.state.message}
           show={this.state.showBack} />
