@@ -19,7 +19,7 @@ class App extends Component {
     dealer: {
       cards: [],
       cardsScores: [],
-      scores: 0
+      scores: null
     },
     isActiveButtons: {
       dealButton: false,
@@ -59,7 +59,19 @@ class App extends Component {
       initCards[j] = temp1;
       initDeckScores[j] = temp2;
     };
-    this.setState({cards: initCards, deckScores: initDeckScores});
+    const buttons = {...this.state.isActiveButtons}
+    buttons.dealButton = false;
+    buttons.doubleButton = false;
+    buttons.hitButton = false;
+    buttons.standButton = false;
+
+    this.setState({
+      cards: initCards, 
+      deckScores: initDeckScores,
+      isActiveChips: true,
+      isActiveButtons: buttons,
+      bet: 0
+    });
     console.log(initCards, initDeckScores);
   }
   
@@ -81,6 +93,7 @@ class App extends Component {
     },0);
     this.setState({cards: cardsTurn, deckScores: deckScoresTurn, [type]: gamer});
     if (gamer.scores > 21) this.cutAce(type);
+
   }
 
   startRound = async () => {
@@ -90,17 +103,24 @@ class App extends Component {
     await this.nextTurn(player);
     await this.nextTurn(dealer);
     await this.nextTurn(dealer);
-    if (this.state.player.scores === 21) this.blackJack();
     const state = {...this.state.isActiveButtons};
     state.dealButton = false;
     state.doubleButton = true;
     state.standButton = true;
     state.hitButton = true;
     this.setState({isActiveButtons: state, isActiveChips: false, message: 'Good Luck!', showBack: true});     
+    if (this.state.player.scores === 21) this.blackJack();
   }
 
   blackJack = () => {
-
+    this.setState((prevState, props) => {
+      return {
+        money: prevState.money + (prevState.bet * 1.5), 
+        message: 'Black Jack!!!', 
+        bet: 0, 
+        showBack: false}
+    })
+    this.init();
   }
 
   changeBetHandler = (count) => {
@@ -109,10 +129,11 @@ class App extends Component {
         return {message: 'Insufficient funds!'}
       });
     } else {
+      this.clearFields();
       const buttons = {...this.state.isActiveButtons};
       buttons.dealButton = true;  
       this.setState((prevState, props) => {
-        return {isActiveButtons: buttons, bet: prevState.bet + count}
+        return {isActiveButtons: buttons, bet: prevState.bet + count, message: 'Good Luck!'}
       });
     }
   }
@@ -129,11 +150,35 @@ class App extends Component {
     this.setState({[type]: playerType});
   }
 
-  hitButtonHandler = () => {
+  hitButtonHandler = async () => {
     const player = 'player';
-    const dealer = 'dealer'; 
-    this.nextTurn(player);
-    // if (this.state.player.scores > 21)
+    await this.nextTurn(player);
+    if (this.state.player.scores > 21)  this.playerLoseHandler();
+  }
+
+  clearFields = () => {
+    const player = {
+      cards: [],
+      cardsScores: [],
+      scores: 0
+    };
+    const dealer = {
+      cards: [],
+      cardsScores: [],
+      scores: null
+    };
+    this.setState({player: player, dealer: dealer})
+  }
+
+  playerLoseHandler = () => {
+    this.setState((prevState, props) => {
+      return {
+        message: 'You Lose!',
+        showBack: false,
+        money: prevState.money - prevState.bet
+      }
+    });
+    this.init();
   }
 
   render () {      

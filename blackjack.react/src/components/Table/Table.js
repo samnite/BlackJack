@@ -17,7 +17,7 @@ const table = (props) => {
                     <h2>{props.message}</h2>
                 </div>
 
-                <label className={classes.dealer_label} > Dealer: </label>
+                <label className={classes.dealer_label} > Dealer: {props.show ? null : props.dealer.scores} </label>
                 <div className={dealerHand.join(' ')}>
                     {props.show ? (
                                 <Aux>

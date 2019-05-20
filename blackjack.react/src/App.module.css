@@ -64,6 +64,7 @@ h1 {
     margin: 15px 2px; 
     vertical-align: top;
     height: 50px;
+    cursor: pointer;
 }
 /* .Buttons button:hover {
     opacity: 0.7;
