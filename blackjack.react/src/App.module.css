@@ -131,11 +131,15 @@ h1 {
 .bet_square, .pot_square {
     font-weight: 800;
     font-size: 23px;
-    margin-top: -8px;
+    margin-top: 3px;
     width: 100px;
     letter-spacing: 0.1em;
     color: #484e56;
-    text-transform: uppercase;
+    text-transform: uppercase;    
+}
+
+.bet_square p, .pot_square p {
+    line-height: 0.5;
 }
 .pot, .bet {
     margin-top: -24px;
@@ -199,10 +203,11 @@ h1 {
     }
     .betting {
         margin-top: 6px;
-        height: 154px;
+        height: 130px;
         border-radius: 5px;
     }
     .bet_square, .pot_square {
+
         margin: 0;
         float: none;
         width: 200px;
@@ -211,7 +216,8 @@ h1 {
         margin-top: 5px;
     }
     .bet_square p, .pot_square p {
-        margin: 0;
+        line-height: 1;
+        margin: 5px;
         font-size: 20px;
         display: inline-block;
     }

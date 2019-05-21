@@ -72,7 +72,6 @@ class App extends Component {
       isActiveButtons: buttons,
       bet: 0
     });
-    console.log(initCards, initDeckScores);
   }
   
   componentDidMount() {
@@ -171,17 +170,7 @@ class App extends Component {
     this.setState({player: player, dealer: dealer})
   }
 
-  playerLoseHandler = () => {
-    this.setState((prevState, props) => {
-      return {
-        message: 'You Lose!',
-        showBack: false,
-        money: prevState.money - prevState.bet
-      }
-    });
-    this.init();
-  }
-
+  
   doubleButtonHandler = () => {
     if(this.state.bet * 2 < this.state.money) {
       this.hitButtonHandler();
@@ -202,7 +191,50 @@ class App extends Component {
         await this.nextTurn(dealer);
       }
     }
-    this.setState({showBack: false})
+    this.setState({showBack: false});
+    this.endTurnHandler();
+  }
+
+  playerWinHandler = () => {
+    this.setState((prevState, props) => {
+      return {
+        message: 'You Win!',
+        showBack: false,
+        money: prevState.money + prevState.bet
+      }
+    });
+    this.init();
+  }
+
+  playerLoseHandler = () => {
+    this.setState((prevState, props) => {
+      return {
+        message: 'You Lose!',
+        showBack: false,
+        money: prevState.money - prevState.bet
+      }
+    });
+    this.init();
+  }
+  
+  endTurnHandler = () => {
+    if (this.state.player.scores > this.state.dealer.scores && this.state.player.scores <= 21) {
+      this.playerWinHandler();
+      } else if (this.state.player.scores > 21) {
+          this.playerLoseHandler();
+      } else if (this.state.player.scores <= 21 && this.state.dealer.scores > 21) {
+          this.playerWinHandler();
+      } else if (this.state.player.scores <= 21 && this.state.dealer.scores <= 21 && this.state.player.scores < this.state.dealer.scores) {
+          this.playerLoseHandler();
+      } else {
+          this.setState((prevStatem, props) => {
+            return {
+              message: 'Draw!',
+              showBack: false              
+            }
+          });
+          this.init();
+      }
   }
 
   render () {      
