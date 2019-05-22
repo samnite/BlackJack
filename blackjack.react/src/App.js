@@ -116,8 +116,9 @@ class App extends Component {
       return {
         money: prevState.money + (prevState.bet * 1.5), 
         message: 'Black Jack!!!', 
-        bet: 0, 
-        showBack: false}
+        bet: 0,
+        showBack: false 
+        }
     })
     this.init();
   }
@@ -171,14 +172,15 @@ class App extends Component {
   }
 
   
-  doubleButtonHandler = () => {
+  doubleButtonHandler = async () => {
     if(this.state.bet * 2 < this.state.money) {
-      this.hitButtonHandler();
+      await this.hitButtonHandler();
       this.setState((prevState, props) => {
         return {
           bet: prevState.bet * 2
         }
-      })
+      });
+      await this.dealerTurnHandler();
     } else {
       this.setState({message: 'Insufficient funds!'})
     }
